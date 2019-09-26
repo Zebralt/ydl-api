@@ -3,6 +3,7 @@ import asyncio
 from quart import Quart
 import time
 from random import randrange
+import os
 
 import download as dl
 
@@ -21,6 +22,11 @@ async def list_songs():
 async def list_tasks():
     return '<br/>'.join(map(str, dl.TASKS.items()))
 
+
+@app.get('/ls')
+async def list_files():
+    return '<br/>'.join(os.listdir('/music'))
+
   
 @app.get('/download')
 async def download_song():
@@ -31,6 +37,9 @@ async def download_song():
 
     task['target'] = tid
     task['status'] = 'In process'
+
+    with open(f"/music/{tid}.log", "w+") as f:
+        f.write("1")
 
     await asyncio.sleep(2)
 
