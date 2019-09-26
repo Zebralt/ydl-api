@@ -1,12 +1,12 @@
 FROM python:3.7
 
-ADD . /app
 WORKDIR /app
 
+# So that this isn't run every single fuck**g time
+ADD ./requirements.txt /app
 RUN pip3 install -r requirements.txt
 
-# MOUNT host machine
-# NETWORK ?
+ADD . /app
 
 EXPOSE 8080
 
