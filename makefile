@@ -10,7 +10,6 @@ build:
 	docker build . -t $(tag)
 
 run:
-	echo $(library)
 	docker run -d --network=$(network) --mount type=bind,source=$(library),target=/music $(tag)
 	sleep 1 && xdg-open http://localhost:$(hostport)
 
@@ -22,4 +21,5 @@ b: build
 r: run
 p:
 	docker ps
-
+l:
+	docker ps -a | grep ydlapi | head -n 1 | cut -d' ' -f1 | xargs -r docker logs
