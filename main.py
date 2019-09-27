@@ -46,9 +46,9 @@ async def list_tasks():
     v = v.replace(' ', '&nbsp;')
 
     v = f"""
-    <div style='font-family:monospace;'>
+    <html style='font-family:monospace; color: white; background-color: black'>
     {v}
-    </div>
+    </html>
     """
 
 
