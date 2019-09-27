@@ -16,6 +16,9 @@ run:
 kill:
 	docker ps | grep ydlapi | cut -d' ' -f1 | xargs -r docker kill
 
+start:
+	hypercorn --debug -b :8080 main:app
+
 k: kill
 b: build
 r: run

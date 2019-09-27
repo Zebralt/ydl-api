@@ -7,17 +7,22 @@ import time
 
 
 URL_REGEX = r'https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)'
-MUSIC_LIBRARY = os.environ.get('MUSIC_LIBRARY') or 'd'
+MUSIC_LIBRARY = os.environ.get('MUSIC_LIBRARY') or '/music'
 CMD = (
     "youtube-dl"
     " -x"  # Extract only audio
     " --audio-format mp3"  # In mp3 format
     " {url}"
-    f" -o '{MUSIC_LIBRARY}%(title)s.$(ext)s'" # Name the song after the video's title
+    f" -o '{MUSIC_LIBRARY}/%(title)s.$(ext)s'" # Name the song after the video's title
 )
 
 
-TASKS = {}
+TASKS = {
+    0: {
+        'target': 0,
+        'status': 'Pending'
+    }
+}
 
 
 async def download(url):
