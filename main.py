@@ -1,5 +1,6 @@
 import asyncio
 import os
+import re
 import time
 from functools import partial, wraps
 from random import randrange
@@ -7,6 +8,8 @@ from random import randrange
 from quart import Quart
 
 import download as dl
+
+from asciitable import p as atable
 
 
 app = Quart(__name__)
@@ -21,7 +24,35 @@ async def list_songs():
 
 @app.get('/tasks')
 async def list_tasks():
-    return '<br/>'.join(map(str, dl.TASKS.values()))
+    data = [
+        dict(
+            tid=key,
+            **value
+        )
+        for key, value in dl.TASKS.items()
+    ]
+
+    if not data:
+        return ''
+    
+    v = atable(
+        data[0].keys(),
+        [list(d.values()) for d in data],
+        sizes=30
+    ).replace('\n', '<br/>')
+
+    v = v.strip()
+    v = re.sub(r'\x1b\[[0-9;a-z]*?m', '', v)
+    v = v.replace(' ', '&nbsp;')
+
+    v = f"""
+    <div style='font-family:monospace;'>
+    {v}
+    </div>
+    """
+
+
+    return v
 
 
 @app.get('/ls')
@@ -53,7 +84,7 @@ async def download_song():
 
     asyncio.ensure_future(save(tid))
 
-    return '<br/>'.join(os.listdir('/music')) + '::' + str(tid)
+    return str(tid)
 
 
 @app.get('/')
