@@ -18,10 +18,6 @@ CMD = (
 
 
 TASKS = {
-    0: {
-        'target': 0,
-        'status': 'Pending'
-    }
 }
 
 
