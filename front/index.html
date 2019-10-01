@@ -5,54 +5,29 @@
         <title> Download </title>
         <meta charset=utf-8>
         <link rel="stylesheet" href="style.css">
+        <script type="text/javascript" src="index.js"></script>
     </header>
 
     <body>
         <div id="content">
             <div id="main">
-                <input id="dialog" type="text" placeholder="Paste your URL here" onkeypress="on_enter(event, process_input, this)"/>
-            </div>
-            <div id="history">
-
+                <div id="form">
+                    <input id="dialog" type="text" placeholder="Paste your URL here" onkeypress="on_enter(event, process_input, this)"/>
+                </div>
+                <div id="history">
+                    <ul>
+                        <li>
+                            <span>Shadows.mp3</span>
+                            <img src="imgs/download.svg"/>
+                        </li>
+                        <li>
+                            <span>Shadows.mp3</span>
+                            <img src="imgs/download.svg"/>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </body>
-
-    <script type="text/javascript">
-    
-    process_input = elm => {
-        var config = {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: {
-                'url': 'a'
-            }
-        }
-        // config = {
-        //     mode: 'cors',
-        // }
-        fetch('http://localhost:8080/downloadx', config).then(
-            response => {
-                alert(response);
-                return response.json();
-            }
-        ).then(
-            json => {
-                console.log(json);
-                console.log(json.url);
-            }
-        )
-    }
-
-    on_enter = (event, fn, self) => {
-        if (event.code == 'Enter') {
-            fn(self)
-        }
-    }
-
-    </script>
 
 </html>

@@ -16,7 +16,7 @@ run:
 	# (($(view))) && sleep 1 && xdg-open http://localhost:$(hostport)
 
 	if [ "$(view)" = true ]; then \
-		sleep 1 && xdg-open http://localhost:$(hostport) \
+		sleep 1 && xdg-open http://localhost:$(hostport) && xdg-open front/index.html \
 	;fi
 
 kill:

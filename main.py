@@ -132,9 +132,8 @@ async def save(tid):
     return tid
 
 
-@app.get('/download')
-async def download_song():
-
+def create_task():
+    
     tid = time.time() + randrange(300)
     task = {}
     dl.TASKS[tid] = task
@@ -145,6 +144,11 @@ async def download_song():
     asyncio.ensure_future(save(tid))
 
     return str(tid)
+
+
+@app.get('/download')
+async def download_song():
+    return create_task()
 
 
 async def aenumerate(aiter):
@@ -179,7 +183,8 @@ async def dlsong():
     # Do something with it
     print(url, fmt)
 
-    return jsonify(data)
+    # return jsonify(data)
+    return create_task()
 
 
 from htmlize import m
