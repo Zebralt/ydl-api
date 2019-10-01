@@ -1,0 +1,38 @@
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#dialog {
+    border: 1px solid #ddd;
+    height: 20px;
+    width: calc(100% - 12px);
+    padding: 2px 5px 2px 5px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: monospace;
+    background-color: #fefdfe;
+    color: #555;
+    position: absolute;
+}
+
+#dialog:focus {
+    border: 1px solid lightsteelblue;
+    background-color: #fcfcfe;
+}
+
+#content {
+    background-color: #eef;
+    width: 500px;
+    margin: 0 auto;
+    height: 100%;
+    position: relative;
+}
+
+#main {
+    position: absolute;
+    top: 10%;
+    width: 100%;
+}
