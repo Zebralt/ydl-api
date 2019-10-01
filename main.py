@@ -2,10 +2,11 @@ import asyncio
 import os
 import re
 import time
-from functools import partial, wraps
+from functools import partial
 from random import randrange
 
 from quart import Quart
+from quart_cors import cors
 
 import download as dl
 
@@ -13,6 +14,7 @@ from asciitable import p as atable
 
 
 app = Quart(__name__)
+app = cors(app, allow_origin='*')
 app.post = partial(app.route, methods=['POST'])
 app.get = partial(app.route, methods=['GET'])
 
@@ -39,7 +41,7 @@ def get_css_color(codes):
     codes = codes.split(';')
 
     for idx, code in enumerate(codes):
-        
+
         c = int(code)
         t = 'color: {};'
         if c in range(40, 48) or c in range(100, 108):
@@ -50,19 +52,19 @@ def get_css_color(codes):
 
     print(codes)
 
-
     return ';'.join(codes)
 
-    
+
 def color_escape_to_html(text):
+
     regex = r'\x1b\[([\w;]*?)m(.*?\x1b\[0?m)'
 
-    otext = text
+    # otext = text
 
     print(repr(text))
 
     m = re.match(regex, text)
-    
+
     while m:
         a, b = m.span()
         color, inner = m.groups()
@@ -87,7 +89,7 @@ async def list_tasks():
     if not data:
         return """<html style='font-family:monospace; color: white; background-color: black'>
             </html>"""
-    
+
     v = atable(
         data[0].keys(),
         [list(d.values()) for d in data],
@@ -104,7 +106,6 @@ async def list_tasks():
     {v}
     </html>
     """
-
 
     return v
 
@@ -126,10 +127,10 @@ async def save(tid):
 
     return tid
 
-  
+
 @app.get('/download')
 async def download_song():
-    
+
     tid = time.time() + randrange(300)
     task = {}
     dl.TASKS[tid] = task
@@ -142,7 +143,15 @@ async def download_song():
     return str(tid)
 
 
+from htmlize import m
+
+
 @app.get('/')
 async def home():
-    return 'Hello world!'
-    
+    return m.html(
+        m.body(
+            m.input(type="text"),
+            m.button("This is Sparta!")
+        ),
+        style="background-color: black; color: white"
+    )
