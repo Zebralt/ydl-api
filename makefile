@@ -3,6 +3,7 @@ tag=ydlapi
 hostport=8080
 network=host
 library=$(shell pwd)/d
+view=true
 
 all: kill build run p
 
@@ -11,7 +12,12 @@ build:
 
 run:
 	docker run -d --network=$(network) --mount type=bind,source=$(library),target=/music $(tag)
-	sleep 1 && xdg-open http://localhost:$(hostport)
+	
+	# (($(view))) && sleep 1 && xdg-open http://localhost:$(hostport)
+
+	if [ "$(view)" = true ]; then \
+		sleep 1 && xdg-open http://localhost:$(hostport) \
+	;fi
 
 kill:
 	docker ps | grep ydlapi | cut -d' ' -f1 | xargs -r docker kill

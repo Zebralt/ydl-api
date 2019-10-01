@@ -5,8 +5,13 @@ import time
 from functools import partial
 from random import randrange
 
-from quart import Quart
-from quart_cors import cors
+from quart import Quart, request, jsonify, json
+from quart.exceptions import BadRequest
+from quart_cors import cors, route_cors
+
+import logging
+# logger = logging.getLogger('hypercorn.access')
+logger = logging
 
 import download as dl
 
@@ -141,6 +146,32 @@ async def download_song():
     asyncio.ensure_future(save(tid))
 
     return str(tid)
+
+
+@app.post('/downloadx')
+# @route_cors(allow_origin='*')
+async def dlsong():
+
+    data = await request.get_data()
+    data = data.decode('utf-8')
+    # data = json.loads(data)
+    data = {
+        "url": data
+    }
+
+    print(data)
+    logger.info('WHAT THE HECK')
+
+    try:
+        url, fmt = data['url'], data.get('format') or data.get('fmt')
+    except KeyError:  # as ke:
+        # raise BadRequest(f"{ke} key is needed")
+        raise BadRequest
+
+    # Do something with it
+    print(url, fmt)
+
+    return jsonify(data)
 
 
 from htmlize import m
