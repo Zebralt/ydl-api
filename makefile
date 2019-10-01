@@ -25,10 +25,18 @@ kill:
 start:
 	hypercorn --debug -b :8080 main:app
 
+log:
+	docker ps -a | grep ydlapi | head -n 1 | cut -d' ' -f1 | xargs -r docker logs
+
+ps:
+	docker ps
+
+watch:
+	watch make l
+
 k: kill
 b: build
 r: run
-p:
-	docker ps
-l:
-	docker ps -a | grep ydlapi | head -n 1 | cut -d' ' -f1 | xargs -r docker logs
+p: ps
+l: log
+w: watch
