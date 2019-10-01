@@ -1,14 +1,20 @@
-from functools import partial
 from typing import Union, Optional, List, Iterator
 import os
 import re
 
 
-def rflen(txt):
+def rflen(txt: str) -> int:
     return len(re.sub(r'\x1b\[[0-9;a-z]*?m', '', txt))
 
 
-def p(headers: List[str], rows: Iterator, margin=1, sizes='*', types=False, hb=0) -> Iterator:
+def p(
+    headers: List[str],
+    rows: Iterator,
+    margin: int = 1,
+    sizes: Union[str, List[Union[int, str]]] = '*',
+    types: Optional[List[Union[str, type]]] = None,
+    hb: bool = False
+) -> Iterator:
 
     # Width should be auto-adjusting
     margin_space = " " * margin
@@ -59,24 +65,23 @@ def p(headers: List[str], rows: Iterator, margin=1, sizes='*', types=False, hb=0
 
     horizontal_border = '\u251c' + horizontal_border[1:-1] + '\u2524'
 
-    ff = lambda tup: '\u2502' + margin_space + f'{margin_space}\u2502{margin_space}'.join(
-            '%-{}s'.format(size) % (item if rflen(item) <= size else item[:size - 1] + '\033[94m…\033[m')
+    def ff(tup): return '\u2502' + margin_space + f'{margin_space}\u2502{margin_space}'.join(
+            '%-{}s'.format(size) % (item if rflen(item) <= size else item[:size - 1] + '…')
             for item, size in zip(map(str, tup), sizes)
         ) + margin_space + '\u2502'
 
     lines = map(ff, rows)
 
     lines = [
-        # '\033[m%s' % top_border,
+        # '%s' % top_border,
         ' ' * len(top_border),
-        '\033[1;92m%s' % ff(headers).replace('\u2502', ' '),
-        '\033[95m%s\033[m' % top_border2,
+        '%s' % ff(headers).replace('\u2502', ' '),
+        '%s' % top_border2,
         *(hb and f'\n{horizontal_border}\n' or '\n').join(
             lines
         ).split('\n'),
         bottom_border
     ]
-    
 
     # tt = os.get_terminal_size(0).columns
 
@@ -85,7 +90,7 @@ def p(headers: List[str], rows: Iterator, margin=1, sizes='*', types=False, hb=0
     #     for l in lines
     # ]
 
-    # lines = [l.replace(' ', '\033[90m@\033[m') for l in lines]
+    # lines = [l.replace(' ', '@') for l in lines]
     # lines = [
     #     l + ' ' + str(len(re.sub(r'\x1b\[[0-9;a-z]*?m', '', l)))
     #     for l in lines
@@ -95,10 +100,10 @@ def p(headers: List[str], rows: Iterator, margin=1, sizes='*', types=False, hb=0
 
 
 if __name__ == "__main__":
-    
+
     print(
-        p(headers=['This', 'is', 'data'], rows=[
+        p(headers=['name', 'Might', 'Fate'], rows=[
             ["This is the name", 3, 2],
             ["other name", 4, 2]
-        ], sizes=(10, '*', 20))
+        ], sizes='_')
     )
