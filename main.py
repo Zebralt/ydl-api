@@ -10,8 +10,7 @@ from quart.exceptions import BadRequest
 from quart_cors import cors, route_cors
 
 import logging
-# logger = logging.getLogger('hypercorn.access')
-logger = logging
+logging.getLogger().setLevel(logging.DEBUG)
 
 import download as dl
 
@@ -148,19 +147,28 @@ async def download_song():
     return str(tid)
 
 
-@app.post('/downloadx')
+async def aenumerate(aiter):
+    idx = 0
+    async for item in aiter:
+        yield idx, item
+        idx += 1
+
+
+def pstr(*msg, sep=' '):
+    return sep.join(map(str, msg))
+
+
+@app.post('/download')
 # @route_cors(allow_origin='*')
 async def dlsong():
 
     data = await request.get_data()
-    data = data.decode('utf-8')
-    # data = json.loads(data)
-    data = {
-        "url": data
-    }
 
-    print(data)
-    logger.info('WHAT THE HECK')
+    data = data.decode('utf-8')
+
+    data = json.loads(data)
+
+    logging.debug(data)
 
     try:
         url, fmt = data['url'], data.get('format') or data.get('fmt')
