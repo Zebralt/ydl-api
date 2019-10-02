@@ -1,4 +1,9 @@
 
+
+// var REMOTE = 'http://localhost:8080/download';
+var REMOTE = 'http://ydlapi_default:8080/download';
+
+
 GET = (url) => {
     return fetch(
         url, {
@@ -32,7 +37,7 @@ process_input = elm => {
         return;
     }
 
-    POST('http://localhost:8080/download', {
+    POST(`${REMOTE}`, {
         'url': elm.value
     }).then(
         (response) => {
@@ -101,7 +106,7 @@ update_task_status = task => {
 
     console.log(`Updating ${task.id}`)
 
-    GET(`http://localhost:8080/task/${task.id}`).then(
+    GET(`${REMOTE}/task/${task.id}`).then(
         response => {
             return response.json();
         }
