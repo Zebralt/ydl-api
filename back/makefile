@@ -1,10 +1,11 @@
 
 
 tag=ydlapi
-hostport=8080
+hostport=8081
 network=host
 library=$(shell pwd)/d
 view=true
+ip=$(shell ip a | grep wlo1 | grep -o 'inet \([0-9.]\+\)' | cut -d' ' -f2)
 
 all: kill build run p
 
@@ -12,22 +13,22 @@ build:
 	docker build . -t $(tag)
 
 run:
-	docker run -d --network=$(network) --mount type=bind,source=$(library),target=/music $(tag)
+	docker run -d -p $(hostport):8080 --mount type=bind,source=$(library),target=/music $(tag)
 	
 	# (($(view))) && sleep 1 && xdg-open http://localhost:$(hostport)
 
 	if [ "$(view)" = true ]; then \
-		sleep 1 && xdg-open http://localhost:$(hostport) \
+		sleep 1 && xdg-open http://$(ip):$(hostport) \
 	;fi
 
 kill:
-	docker ps | grep ydlapi | cut -d' ' -f1 | xargs -r docker kill
+	docker ps | grep $(tag) | cut -d' ' -f1 | xargs -r docker kill
 
 start:
 	hypercorn --debug -b :8080 main:app
 
 log:
-	docker ps -a | grep ydlapi | head -n 1 | cut -d' ' -f1 | xargs -r docker logs
+	docker ps -a | grep $(tag) | head -n 1 | cut -d' ' -f1 | xargs -r docker logs
 
 ps:
 	docker ps
