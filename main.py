@@ -190,6 +190,12 @@ async def dlsong():
 from htmlize import m
 
 
+@app.get('/task/<tid>')
+def get_task_metadata(tid):
+    tid = float(tid)
+    return dl.TASKS.get(tid, {})
+
+
 @app.get('/')
 async def home():
     return m.html(
