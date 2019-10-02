@@ -1,7 +1,6 @@
 
-
 tag=ydlapi
-hostport=8081
+hostport=8080
 network=host
 library=$(shell pwd)/d
 view=true
@@ -14,8 +13,6 @@ build:
 
 run:
 	docker run -d -p $(hostport):8080 --mount type=bind,source=$(library),target=/music $(tag)
-	
-	# (($(view))) && sleep 1 && xdg-open http://localhost:$(hostport)
 
 	if [ "$(view)" = true ]; then \
 		sleep 1 && xdg-open http://$(ip):$(hostport) \
