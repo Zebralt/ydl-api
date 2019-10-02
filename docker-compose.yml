@@ -1,0 +1,14 @@
+version: '3.2'
+services:
+  back:
+    build: back
+    volumes:
+      - type: bind
+        source: ./library
+        target: /music
+    ports: 
+      - "8080:8080"
+  front:
+    build: front
+    ports:
+      - "8085:80"
