@@ -139,7 +139,7 @@ async def save(tid):
 
 
 def create_task():
-    
+
     tid = time.time() + randrange(300)
     task = {}
     dl.TASKS[tid] = task
@@ -182,18 +182,13 @@ async def dlsong():
 
     try:
         url, fmt = data['url'], data.get('format') or data.get('fmt')
-    except KeyError:  # as ke:
-        # raise BadRequest(f"{ke} key is needed")
+    except KeyError:
         raise BadRequest
 
     # Do something with it
     print(url, fmt)
 
-    # return jsonify(data)
     return create_task()
-
-
-from htmlize import m
 
 
 @app.get('/task/<tid>')
@@ -204,10 +199,4 @@ def get_task_metadata(tid):
 
 @app.get('/')
 async def home():
-    return m.html(
-        m.body(
-            m.input(type="text"),
-            m.button("This is Sparta!")
-        ),
-        style="background-color: black; color: white"
-    )
+    return 'Hi'

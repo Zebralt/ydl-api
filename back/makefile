@@ -1,4 +1,5 @@
 
+
 tag=ydlapi
 hostport=8080
 network=host
@@ -16,7 +17,7 @@ run:
 	# (($(view))) && sleep 1 && xdg-open http://localhost:$(hostport)
 
 	if [ "$(view)" = true ]; then \
-		sleep 1 && xdg-open http://localhost:$(hostport) && xdg-open front/index.html \
+		sleep 1 && xdg-open http://localhost:$(hostport) \
 	;fi
 
 kill:
