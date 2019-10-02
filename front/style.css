@@ -24,7 +24,7 @@ html, body {
 }
 
 #content {
-    background-color: #eef;
+    /* background-color: #eef; */
     width: 500px;
     margin: 0 auto;
     height: 100%;
@@ -82,6 +82,9 @@ html, body {
     /* font-weight: bold; */
 }
 
+#history li.success {
+    background-color: rgba(144, 238, 144, .6);
+}
 #history li.pending span:nth-of-type(2) {
     color: gray;
 }

@@ -21,7 +21,7 @@ POST = (url, body) => {
 }
 
 on_enter = (event, fn, target) => {
-    if (event.code == 'Enter') {
+    if (event.code == 'Enter' || event.code == 'NumpadEnter') {
         fn(target);
     }
 }
@@ -55,7 +55,7 @@ register_task = (task_id) => {
         dom_obj: li_obj,
         id: task_id,
         counter: 10,
-        status: 'Pending'
+        status: 0
     }
 
     render_task(task);
@@ -67,27 +67,33 @@ register_task = (task_id) => {
 
 render_task = task => {
 
-    task.dom_obj.innerHTML = `
-    <span> ${task.id} </span>
-    <span> ${task.status} </span>
-    `;
-
     cls = '';
+    status = '';
 
     switch (task.status) {
-        case 'Pending':
+        case 0:
             cls = 'pending';
+            status = 'Pending';
             break;
-        case 'Success':
+        case 1:
             cls = 'success';
+            status = 'Success';
             break;
-        case 'Failed':
+        case 2:
             cls = 'failure';
+            status = 'Failed;'
             break;
-        default: break;
+        default: 
+            status = '?';
+        break;
     }
 
     task.dom_obj.className = cls;
+
+    task.dom_obj.innerHTML = `
+    <span> ${task.id} </span>
+    <span> ${status} </span>
+    `;
 
 }
 
@@ -102,7 +108,7 @@ update_task_status = task => {
     ).then(
         json => {
             console.log(json);
-            if (json.status != 'Success') {
+            if (json.status != 1) {
                 task.counter -= 1;
             }
             else {
@@ -110,7 +116,7 @@ update_task_status = task => {
             }
 
             if (task.counter == 0) {
-                json.status = 'Failed'
+                json.status = 2;
             }
 
             task.status = json.status;

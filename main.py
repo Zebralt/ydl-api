@@ -23,6 +23,12 @@ app.post = partial(app.route, methods=['POST'])
 app.get = partial(app.route, methods=['GET'])
 
 
+class Task:
+    PENDING = 0
+    SUCCESS = 1
+    FAILURE = 2
+
+
 colors = {
     0: 'black',
     1: 'red',
@@ -126,7 +132,7 @@ async def save(tid):
 
     await asyncio.sleep(5)
 
-    dl.TASKS[tid]['status'] = 'Success'
+    dl.TASKS[tid]['status'] = Task.SUCCESS
     dl.TASKS[tid]['file'] = 'file.mp3'
 
     return tid
@@ -139,7 +145,7 @@ def create_task():
     dl.TASKS[tid] = task
 
     task['target'] = tid
-    task['status'] = 'In process'
+    task['status'] = Task.PENDING
 
     asyncio.ensure_future(save(tid))
 
