@@ -31,14 +31,16 @@ on_enter = (event, fn, target) => {
     }
 }
 
-process_input = elm => {
+process_input = (url) => {
 
-    if (!elm.value.trim()) {
+    if (!url.trim()) {
         return;
     }
 
+    url = url.split('&')[0]  // Remove additional url args
+
     POST(`${REMOTE}`, {
-        'url': elm.value
+        'url': url
     }).then(
         (response) => {
             return response.json();

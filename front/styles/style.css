@@ -12,7 +12,7 @@ html, body {
     padding: 2px 5px 2px 5px;
     border-radius: 4px;
     font-size: 14px;
-    font-family: monospace;
+    /* font-family: monospace; */
     background-color: #fefdfe;
     color: #555;
     position: absolute;
@@ -43,11 +43,13 @@ html, body {
 
 #history {
     display: inline-block;
-    width: 100%;
-    margin: 50px 0;
-    border: 1px solid black;
-    overflow-y: scroll;
+    width: calc(100% - 10px);
+    margin: 40px 0;
+    /* overflow-y: scroll; */
     height: fit-content;
+    height: 350px;
+    padding: 5px;
+    overflow-y: scroll;
 }
 
 #history ul {
@@ -58,41 +60,40 @@ html, body {
 
 #history li {
     background-color: #fffa;
-    border-radius: 4px;
     margin-top: 1px;
     padding: 0;
     display: inline-block;
     width: 100%;
-    height: 24px;
+    border-bottom: 1px dashed #bbb;
+    padding-bottom: 2px;
+    margin-bottom: 1px;
+    border-radius: 3px;
 }
 
 #history li span:first-of-type {
     font-size: 14px;
     height: 100%;
-    font-family: monospace;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 13px;
-    color: #555;
+    max-width: 300px;
+    padding: 0 5px 0 5px;
 }
 
 #history li span:nth-of-type(2) {
     float: right;
     height: auto;
-    margin: 2px;
+    margin: 2px 3px 2px 2px;
     color: darkblue;
     font-size: 12px;
     font-family: sans-serif;
     /* font-weight: bold; */
 }
 
-#history li.success {
-    background-color: rgba(144, 238, 144, .6);
-}
-#history li.pending span:nth-of-type(2) {
-    color: gray;
-}
-#history li.success span:nth-of-type(2) {
-    color: green;
-}
-#history li.failure span:nth-of-type(2) {
-    color: red;
-}
+#history li.pending span:nth-of-type(2) { color: darkgoldenrod }
+#history li.pending { border-bottom: 1px dashed gray; background-color: rgb(252, 222, 147); }
+
+#history li.success span:nth-of-type(2) { color: green }
+#history li.success { border-bottom: 1px dashed purple; background-color: rgb(163, 241, 163); }
+
+#history li.failure span:nth-of-type(2) { color: red }
+#history li.failure { border-bottom: 1px dashed darkgoldenrod; background-color: rgb(255, 159, 159); }
