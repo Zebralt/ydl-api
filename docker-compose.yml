@@ -8,7 +8,11 @@ services:
         target: /music
     ports: 
       - "8080:8080"
+    expose:
+      - "8080"
   front:
     build: front
     ports:
       - "8085:80"
+    expose:
+      - "80"

@@ -5,11 +5,13 @@ hostport=8085
 network=host
 library=$(shell pwd)/d
 view=true
+ip=$(shell ip a | grep wlo1 | grep -o 'inet \([0-9.]\+\)' | cut -d' ' -f2)
 
-all: kill build run p
+
+all: kill rm build run p
 
 build:
-	docker build . -t $(tag)
+	docker build . -t $(tag) --no-cache
 
 run:
 	docker run -d -p $(hostport):80 $(tag)
@@ -17,11 +19,14 @@ run:
 	# (($(view))) && sleep 1 && xdg-open http://localhost:$(hostport)
 
 	if [ "$(view)" = true ]; then \
-		sleep 1 && xdg-open http://localhost:$(hostport) \
+		sleep 1 && xdg-open http://$(ip):$(hostport) \
 	;fi
 
 kill:
 	docker ps | grep $(tag) | cut -d' ' -f1 | xargs -r docker kill
+
+rm:
+	docker ps -a | grep $(tag) | cut -d' ' -f1 | xargs -r docker rm
 
 log:
 	docker ps -a | grep $(tag) | head -n 1 | cut -d' ' -f1 | xargs -r docker logs

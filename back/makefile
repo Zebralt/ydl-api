@@ -1,12 +1,12 @@
 
-tag=ydlapi
+tag=ydlapi-back
 hostport=8080
 network=host
 library=$(shell pwd)/d
 view=true
 ip=$(shell ip a | grep wlo1 | grep -o 'inet \([0-9.]\+\)' | cut -d' ' -f2)
 
-all: kill build run p
+all: kill rm build run p
 
 build:
 	docker build . -t $(tag)
@@ -20,6 +20,9 @@ run:
 
 kill:
 	docker ps | grep $(tag) | cut -d' ' -f1 | xargs -r docker kill
+
+rm:
+	docker ps -a | grep $(tag) | cut -d' ' -f1 | xargs -r docker rm
 
 start:
 	hypercorn --debug -b :8080 main:app

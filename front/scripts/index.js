@@ -37,7 +37,7 @@ process_input = (url) => {
         return;
     }
 
-    url = url.split('&')[0]  // Remove additional url args
+    // url = url.split('&')[0];  // Remove additional url args
 
     POST(`${REMOTE}`, {
         'url': url
