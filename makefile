@@ -2,6 +2,7 @@
 
 all: k
 	docker-compose up -d
+	xdg-open http://0.0.0.0:8085
 
 k:
 	@docker-compose down || echo
