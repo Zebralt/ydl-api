@@ -25,7 +25,7 @@ start:
 	hypercorn --debug -b :8080 main:app
 
 log:
-	docker ps -a | grep $(tag) | head -n 1 | cut -d' ' -f1 | xargs -r docker logs
+	docker ps -a | grep $(tag) | head -n 2 | tail -n 1 | cut -d' ' -f1 | xargs -r docker logs
 
 ps:
 	docker ps
